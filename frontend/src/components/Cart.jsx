@@ -1,41 +1,21 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { CartContext } from "../context/CartContext";
 
 function Cart() {
-  const {
-    cart,
-    showCart,
-    setShowCart,
-    increaseQuantity,
-    decreaseQuantity,
-    removeFromCart,
-  } = useContext(CartContext);
-
+  const { cart, showCart, setShowCart, increaseQuantity, decreaseQuantity, removeFromCart } = useContext(CartContext);
+  
   const navigate = useNavigate();
 
-  const totalPrice = cart.reduce(
-    (total, item) =>
-      total +
-      Number(item.product.price) *
-        item.quantity,
-    0
-  );
+  const totalPrice = cart.reduce( (total, item) => total + Number(item.product.price) * item.quantity, 0 );
 
   return (
     <>
       {showCart && (
-        <div
-          className="overlay"
-          onClick={() =>
-            setShowCart(false)
-          }
-        ></div>
+        <div className="overlay" onClick={() =>setShowCart(false)}> </div>
       )}
 
-      <div
-        className={`cartTab ${
+      <div className={`cartTab ${
           showCart ? "active" : ""
         }`}
       >
@@ -48,10 +28,7 @@ function Cart() {
             </p>
           ) : (
             cart.map((item) => (
-              <div
-                className="item"
-                key={item.id}
-              >
+              <div className="item" key={item.id}>
                 <div className="img">
                   <img
                     src={item.product.image || ""}
@@ -64,52 +41,25 @@ function Cart() {
                     {item.product.name}
                   </div>
 
-                  <div className="totalPrice">
-                    $
+                  <div className="totalPrice">$
                     {(
-                      Number(
-                        item.product.price
-                      ) * item.quantity
-                    ).toFixed(2)}
+                      Number(item.product.price) * item.quantity).toFixed(2)}
                   </div>
                 </div>
 
                 <div className="quantity">
-                  <span
-                    className="minus"
-                    onClick={() =>
-                      decreaseQuantity(
-                        item.product.id
-                      )
-                    }
-                  >
+                  <span className="minus" onClick={() => decreaseQuantity(item.product.id)}>
                     -
                   </span>
 
-                  <span>
-                    {item.quantity}
-                  </span>
+                  <span>{item.quantity}</span>
 
-                  <span
-                    className="plus"
-                    onClick={() =>
-                      increaseQuantity(
-                        item.product.id
-                      )
-                    }
-                  >
+                  <span className="plus" onClick={() => increaseQuantity(item.product.id)}>
                     +
                   </span>
                 </div>
 
-                <button
-                  className="remove"
-                  onClick={() =>
-                    removeFromCart(
-                      item.product.id
-                    )
-                  }
-                >
+                <button className="remove" onClick={() => removeFromCart(item.product.id)}>
                   Remove
                 </button>
               </div>
@@ -125,22 +75,11 @@ function Cart() {
         </div>
 
         <div className="btn">
-          <button
-            className="close"
-            onClick={() =>
-              setShowCart(false)
-            }
-          >
+          <button className="close" onClick={() =>setShowCart(false)}>
             CLOSE
           </button>
 
-          <button
-            className="checkout"
-            onClick={() => {
-              setShowCart(false);
-              navigate("/checkout");
-            }}
-          >
+          <button className="checkout" onClick={() => {setShowCart(false);navigate("/checkout");}}>
             CHECK OUT
           </button>
         </div>

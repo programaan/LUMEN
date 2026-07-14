@@ -16,18 +16,11 @@ function VerifyEmail() {
     async function verify() {
       try {
         await productService.verifyEmail(uid, token);
-
-        toast.success(
-          "Email verified successfully!"
-        );
-
+        toast.success("Email verified successfully!");
         navigate("/account");
-      } catch (error) {
-        toast.error(
-          error.response?.data?.detail ||
-            "Verification failed."
-        );
-
+      } 
+      catch (error) {
+        toast.error(error.response?.data?.detail || "Verification failed.");
         navigate("/account");
       }
     }
@@ -45,8 +38,7 @@ function VerifyEmail() {
         <h2>Verifying Email...</h2>
 
         <p className="account-text">
-          Please wait while we verify your
-          account.
+          Please wait while we verify your account.
         </p>
       </div>
     </section>

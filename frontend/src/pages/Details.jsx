@@ -1,17 +1,14 @@
 import { useParams, Link } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
+import { CartContext } from "../context/CartContext";
 
 import Navbar from "../components/Navbar";
 import Cart from "../components/Cart";
 import Footer from "../components/Footer";
-
-import { CartContext } from "../context/CartContext";
-
-import productService from "../services/productService";
-
 import Loader from "../components/Loader";
 import NotFound from "./NotFound";
 
+import productService from "../services/productService";
 import { Helmet } from "react-helmet-async";
 
 function Details() {
@@ -21,44 +18,32 @@ function Details() {
 
   const [product, setProduct] = useState(null);
 
-  const [relatedProducts, setRelatedProducts] =
-  useState([]);
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
 
-  const [mainImage, setMainImage] =
-    useState("");
+  const [mainImage, setMainImage] = useState("");
 
-  const [selectedSize, setSelectedSize] =
-    useState("M");
+  const [selectedSize, setSelectedSize] = useState("M");
 
-  const [selectedColor, setSelectedColor] =
-    useState("black");
+  const [selectedColor, setSelectedColor] = useState("black");
 
     useEffect(() => {
       const fetchProduct = async () => {
         try {
-          const data =
-            await productService.getProduct(slug);
-
+          const data = await productService.getProduct(slug);
           setProduct(data);
-
           setMainImage(data.image);
 
-          const products =
-            await productService.getProducts();
-
+          const products = await productService.getProducts();
           setRelatedProducts(
-            products.filter(
-              (item) =>
-                item.slug !== slug &&
-                item.category === data.category
-            )
+            products.filter((item) => item.slug !== slug && item.category === data.category)
           );
-        } catch (error) {
+        } 
+        catch (error) {
           console.error(error);
-        } finally {
+        } 
+        finally {
           setLoading(false);
         }
       };
@@ -68,13 +53,7 @@ function Details() {
       window.scrollTo(0, 0);
     }, [slug]);
 
-    const thumbnails = [
-      product?.image,
-      product?.thumbnail1,
-      product?.thumbnail2,
-      product?.thumbnail3,
-      product?.thumbnail4,
-    ].filter(Boolean);
+    const thumbnails = [product?.image, product?.thumbnail1, product?.thumbnail2, product?.thumbnail3, product?.thumbnail4].filter(Boolean);
 
   if (loading) {
     return (
@@ -94,11 +73,7 @@ function Details() {
     <>
       <Helmet>
         <title>{product.name} | LUMEN</title>
-
-        <meta
-          name="description"
-          content={product.description.slice(0, 150)}
-        />
+        <meta name="description" content={product.description.slice(0, 150)}/>
       </Helmet>
 
       <Navbar />
@@ -107,21 +82,11 @@ function Details() {
         <div className="lmn-product-container">
           <div className="lmn-gallery">
 
-            <img
-              src={mainImage}
-              alt={product.name}
-              className="lmn-main-img"
-            />
+            <img src={mainImage} alt={product.name} className="lmn-main-img"/>
 
             <div className="lmn-thumbnails">
               {thumbnails.map((img, index) => (
-                <img
-                  key={index}
-                  src={img}
-                  alt={`${product.name}-${index}`}
-                  className={`lmn-thumb ${
-                    mainImage === img ? "active" : ""
-                  }`}
+                <img key={index} src={img} alt={`${product.name}-${index}`} className={`lmn-thumb ${mainImage === img ? "active" : ""}`}
                   onClick={() => setMainImage(img)}
                 />
               ))}
@@ -163,15 +128,7 @@ function Details() {
             <div className="lmn-size-box">
               <p>Size</p>
 
-              <select
-                className="lmn-select"
-                value={selectedSize}
-                onChange={(e) =>
-                  setSelectedSize(
-                    e.target.value
-                  )
-                }
-              >
+              <select className="lmn-select" value={selectedSize} onChange={(e) => setSelectedSize(e.target.value)}>
                 <option>XS</option>
                 <option>S</option>
                 <option>M</option>
@@ -184,42 +141,22 @@ function Details() {
               <p>Color</p>
 
               <div className="lmn-colors">
-                {[
-                  "black",
-                  "beige",
-                  "gray",
-                ].map((color) => (
-                  <span
-                    key={color}
-                    className={`lmn-color ${
-                      selectedColor === color
-                        ? "active"
-                        : ""
-                    }`}
+                {["black", "beige", "gray"].map((color) => (
+                  <span key={color} className={`lmn-color ${selectedColor === color ? "active" : ""}`}
                     data-color={color}
-                    onClick={() =>
-                      setSelectedColor(
-                        color
-                      )
+                    onClick={() => setSelectedColor(color)
                     }
                   ></span>
                 ))}
               </div>
             </div>
 
-            <button
-              className="lmn-btn"
-              disabled={product.stock === 0}
-              onClick={() => addToCart(product.id)}
-            >
-              {product.stock === 0
-                ? "Out of Stock"
-                : "Add To Bag"}
+            <button className="lmn-btn" disabled={product.stock === 0} onClick={() => addToCart(product.id)}>
+              {product.stock === 0 ? "Out of Stock" : "Add To Bag"}
             </button>
 
             <p className="lmn-shipping">
-              Free shipping on orders over
-              $500
+              Free shipping on orders over $500
             </p>
           </div>
         </div>
@@ -234,21 +171,11 @@ function Details() {
           {relatedProducts
             .slice(0, 3)
             .map((item) => (
-              <Link
-                to={`/details/${item.slug}`}
-                className="lmn-card"
-                key={item.id}
-              >
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="lmn-card-img"
-                />
-
+              <Link to={`/details/${item.slug}`} className="lmn-card" key={item.id}>
+                <img src={item.image} alt={item.name} className="lmn-card-img"/>
                 <p className="lmn-card-name">
                   {item.name}
                 </p>
-
                 <p className="lmn-card-price">
                   ${item.price}
                 </p>

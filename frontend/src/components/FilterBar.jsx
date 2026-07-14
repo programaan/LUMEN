@@ -1,9 +1,4 @@
-function FilterBar({
-  search,
-  setSearch,
-  sort,
-  setSort,
-}) {
+function FilterBar({ search, setSearch, sort, setSort }) {
   return (
     <div className="top-bar">
       <div className="search-box">
@@ -16,10 +11,7 @@ function FilterBar({
       </div>
 
       <div className="sort-box">
-        <select
-          value={sort}
-          onChange={(e) => setSort(e.target.value)}
-        >
+        <select value={sort} onChange={(e) => setSort(e.target.value)}>
           <option value="default">Default</option>
           <option value="low-high">Price: Low to High</option>
           <option value="high-low">Price: High to Low</option>

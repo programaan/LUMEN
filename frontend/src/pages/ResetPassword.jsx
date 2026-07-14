@@ -1,8 +1,5 @@
 import { useState } from "react";
-import {
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { toast } from "sonner";
 
@@ -16,11 +13,9 @@ function ResetPassword() {
 
   const navigate = useNavigate();
 
-  const [password, setPassword] =
-    useState("");
+  const [password, setPassword] = useState("");
 
-  const [confirmPassword, setConfirmPassword] =
-    useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -31,23 +26,13 @@ function ResetPassword() {
     }
 
     try {
-      await productService.resetPassword(
-        uid,
-        token,
-        password,
-        confirmPassword
-      );
+      await productService.resetPassword(uid, token, password, confirmPassword);
 
-      toast.success(
-        "Password changed successfully."
-      );
-
+      toast.success("Password changed successfully.");
       navigate("/account");
-    } catch (error) {
-      toast.error(
-        error.response?.data?.detail ||
-          "Reset link is invalid."
-      );
+    } 
+    catch (error) {
+      toast.error(error.response?.data?.detail || "Reset link is invalid.");
     }
   }
 
@@ -60,34 +45,25 @@ function ResetPassword() {
 
       <Helmet>
         <title>Reset Password | LUMEN</title>
-
         <meta name="robots" content="noindex" />
       </Helmet>
 
       <div className="account-card">
         <h2>Create New Password</h2>
 
-        <form
-          className="account-form"
-          onSubmit={handleSubmit}
-        >
+        <form className="account-form" onSubmit={handleSubmit}>
           <input
             type="password"
             placeholder="New Password"
             value={password}
-            onChange={(e) =>
-              setPassword(e.target.value)
-            }
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <input
             type="password"
             placeholder="Confirm Password"
             value={confirmPassword}
-            onChange={(e) =>
-              setConfirmPassword(
-                e.target.value
-              )
+            onChange={(e) => setConfirmPassword(e.target.value)
             }
           />
 

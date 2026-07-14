@@ -4,26 +4,21 @@ import CollectionCard from "./CollectionCard";
 import productService from "../services/productService";
 import Loader from "./Loader";
 
-function ProductGrid({
-  search,
-  sort,
-  category,
-}) {
+function ProductGrid({ search, sort, category }) {
   const [products, setProducts] = useState([]);
 
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const data =
-          await productService.getProducts();
-
-        setProducts(data);
-      } catch (error) {
+        const data = await productService.getProducts();
+          setProducts(data);
+      } 
+      catch (error) {
         console.error(error);
-      } finally {
+      } 
+      finally {
         setLoading(false);
       }
     };
@@ -34,45 +29,30 @@ function ProductGrid({
   let filteredProducts = [...products];
 
   if (category !== "all") {
-    filteredProducts =
-      filteredProducts.filter(
-        (product) =>
-          product.category
-            .toLowerCase() ===
-          category.toLowerCase()
+    filteredProducts = filteredProducts.filter(
+        (product) => product.category.toLowerCase() === category.toLowerCase()
       );
   }
 
-  filteredProducts =
-    filteredProducts.filter((product) =>
-      product.name
-        .toLowerCase()
-        .includes(search.toLowerCase())
+  filteredProducts = filteredProducts.filter((product) =>
+      product.name.toLowerCase().includes(search.toLowerCase())
     );
 
   switch (sort) {
     case "low-high":
-      filteredProducts.sort(
-        (a, b) => a.price - b.price
-      );
+      filteredProducts.sort((a, b) => a.price - b.price);
       break;
 
     case "high-low":
-      filteredProducts.sort(
-        (a, b) => b.price - a.price
-      );
+      filteredProducts.sort((a, b) => b.price - a.price);
       break;
 
     case "a-z":
-      filteredProducts.sort((a, b) =>
-        a.name.localeCompare(b.name)
-      );
+      filteredProducts.sort((a, b) =>a.name.localeCompare(b.name));
       break;
 
     case "z-a":
-      filteredProducts.sort((a, b) =>
-        b.name.localeCompare(a.name)
-      );
+      filteredProducts.sort((a, b) => b.name.localeCompare(a.name));
       break;
 
     default:
@@ -87,25 +67,17 @@ function ProductGrid({
     <div className="product-section">
       <p className="product-count">
         Showing {filteredProducts.length}{" "}
-        {filteredProducts.length === 1
-          ? "Product"
-          : "Products"}
+        {filteredProducts.length === 1 ? "Product" : "Products"}
       </p>
 
       <div className="listProduct">
-        {filteredProducts.length ===
-        0 ? (
+        {filteredProducts.length === 0 ? (
           <h3 className="no-products">
             No products found.
           </h3>
         ) : (
           filteredProducts.map(
-            (product) => (
-              <CollectionCard
-                key={product.id}
-                product={product}
-              />
-            )
+            (product) => (<CollectionCard key={product.id} product={product}/>)
           )
         )}
       </div>

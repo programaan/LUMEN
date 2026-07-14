@@ -14,18 +14,13 @@ function Collection() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("default");
   const [category, setCategory] = useState("all");
-
   const [showFilters, setShowFilters] = useState(false);
 
   return (
     <>
       <Helmet>
         <title>Collection | LUMEN</title>
-
-        <meta
-          name="description"
-          content="Browse the latest clothing collection from LUMEN."
-        />
+        <meta name="description" content="Browse the latest clothing collection from LUMEN."/>
       </Helmet>
 
       <Navbar />
@@ -43,11 +38,7 @@ function Collection() {
 
       <div className="page">
 
-        <aside
-          className={`sidebar-wrapper ${
-            showFilters ? "active" : ""
-          }`}
-        >
+        <aside className={`sidebar-wrapper ${showFilters ? "active" : ""}`}>
           <Sidebar
             category={category}
             setCategory={setCategory}
@@ -55,10 +46,8 @@ function Collection() {
         </aside>
 
         {showFilters && (
-          <div
-            className="sidebar-overlay"
-            onClick={() => setShowFilters(false)}
-          ></div>
+          <div className="sidebar-overlay" onClick={() => setShowFilters(false)}>            
+          </div>
         )}
 
         <ProductGrid

@@ -1,45 +1,26 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-import {
-  useContext,
-  useState,
-} from "react";
-
+import {useContext, useState} from "react";
 import { CartContext } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
-
-import productService from "../services/productService";
 import { toast } from "sonner";
-
 import { Helmet } from "react-helmet-async";
 
+import productService from "../services/productService";
+
+
 function Checkout() {
-  const { cart, fetchCart } =
-    useContext(CartContext);
+  const { cart, fetchCart } = useContext(CartContext);
 
   const navigate = useNavigate();
 
-  const [processing, setProcessing] =
-    useState(false);
+  const [processing, setProcessing] = useState(false);
 
-  const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    address: "",
-    city: "",
-    country: "",
-  });
+  const [form, setForm] = useState({firstName: "", lastName: "", email: "", phone: "", address: "", city: "", country: ""});
 
   const totalPrice = cart.reduce(
-    (total, item) =>
-      total +
-      Number(item.product.price) *
-        item.quantity,
-    0
-  );
+    (total, item) => total + Number(item.product.price) * item.quantity, 0);
 
   function handleChange(e) {
     let { name, value } = e.target;
@@ -57,111 +38,77 @@ function Checkout() {
   async function handlePlaceOrder() {
     if (processing) return;
 
-    const nameRegex =
-      /^[A-Za-z ]+$/;
+    const nameRegex = /^[A-Za-z ]+$/;
 
-    const emailRegex =
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    const phoneRegex =
-      /^[6-9]\d{9}$/;
+    const phoneRegex = /^[6-9]\d{9}$/;
 
-    if (
-      !nameRegex.test(
+    if (!nameRegex.test(
         form.firstName.trim()
       )
     ) {
-      toast.error(
-        "Enter a valid first name."
-      );
+      toast.error("Enter a valid first name.");
       return;
     }
 
-    if (
-      !nameRegex.test(
+    if (!nameRegex.test(
         form.lastName.trim()
       )
     ) {
-      toast.error(
-        "Enter a valid last name."
-      );
+      toast.error("Enter a valid last name.");
       return;
     }
 
-    if (
-      !emailRegex.test(
+    if (!emailRegex.test(
         form.email.trim()
       )
     ) {
-      toast.error(
-        "Enter a valid email."
-      );
+      toast.error("Enter a valid email.");
       return;
     }
 
-    if (
-      !phoneRegex.test(
+    if (!phoneRegex.test(
         form.phone.trim()
       )
     ) {
-      toast.error(
-        "Phone number must contain exactly 10 digits."
-      );
+      toast.error("Phone number must contain exactly 10 digits.");
       return;
     }
 
-    if (
-      form.address.trim().length < 10
-    ) {
-      toast.error(
-        "Address must be at least 10 characters."
-      );
+    if (form.address.trim().length < 10) {
+      toast.error("Address must be at least 10 characters.");
       return;
     }
 
-    if (
-      !nameRegex.test(
+    if (!nameRegex.test(
         form.city.trim()
       )
     ) {
-      toast.error(
-        "Enter a valid city."
-      );
+      toast.error("Enter a valid city.");
       return;
     }
 
-    if (
-      !nameRegex.test(
+    if (!nameRegex.test(
         form.country.trim()
       )
     ) {
-      toast.error(
-        "Enter a valid country."
-      );
+      toast.error("Enter a valid country.");
       return;
     }
 
     setProcessing(true);
 
     try {
-      const payment =
-        await productService.createPayment();
+      const payment = await productService.createPayment();
 
       const options = {
         key: payment.key,
-
         amount: payment.amount,
-
         currency: "INR",
-
         name: "LUMEN",
-
-        description:
-          "Order Payment",
-
-        order_id:
-          payment.order_id,
-
+        description: "Order Payment",
+        order_id: payment.order_id,
         handler: async function (
           response
         ) {
@@ -172,61 +119,35 @@ function Checkout() {
               response.razorpay_signature
             );
 
-            toast.success(
-              "Payment Successful!"
-            );
-
+            toast.success("Payment Successful!");
             await fetchCart();
-
             setProcessing(false);
-
             navigate("/success");
-          } catch (error) {
+          } 
+          catch (error) {
             console.log(error);
-
             setProcessing(false);
-
-            toast.error(
-              "Payment verification failed."
-            );
+            toast.error("Payment verification failed.");
           }
         },
 
-        modal: {
-          ondismiss: function () {
+        modal: {ondismiss: function () {
             setProcessing(false);
-
-            toast.warning(
-              "Payment cancelled."
-            );
+            toast.warning("Payment cancelled.");
           },
         },
 
-        prefill: {
-          name: `${form.firstName} ${form.lastName}`,
-          email: form.email,
-          contact: form.phone,
-        },
-
-        theme: {
-          color: "#000000",
-        },
+        prefill: {name: `${form.firstName} ${form.lastName}`, email: form.email, contact: form.phone},
+        theme: {color: "#000000"},
       };
 
-      const razorpay =
-        new window.Razorpay(
-          options
-        );
-
+      const razorpay = new window.Razorpay(options);
       razorpay.open();
-    } catch (error) {
+    } 
+    catch (error) {
       console.log(error);
-
       setProcessing(false);
-
-      toast.error(
-        "Unable to start payment."
-      );
+      toast.error("Unable to start payment.");
     }
   }
 
@@ -234,7 +155,6 @@ function Checkout() {
     <>
       <Helmet>
         <title>Checkout | LUMEN</title>
-
         <meta name="robots" content="noindex" />
       </Helmet>
 
@@ -317,10 +237,7 @@ function Checkout() {
           ) : (
             <>
               {cart.map((item) => (
-                <div
-                  className="summary-item"
-                  key={item.id}
-                >
+                <div className="summary-item" key={item.id}>
                   <span>
                     {item.product.name} ×{" "}
                     {item.quantity}
@@ -340,10 +257,7 @@ function Checkout() {
 
               <div className="summary-total">
                 <strong>Total</strong>
-
-                <strong>
-                  ${totalPrice}
-                </strong>
+                <strong>${totalPrice}</strong>
               </div>
 
               <button

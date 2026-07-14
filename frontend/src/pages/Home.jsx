@@ -15,11 +15,7 @@ function Home() {
     <>
       <Helmet>
         <title>LUMEN | Clothing Store</title>
-
-        <meta
-          name="description"
-          content="Shop premium clothing and accessories from LUMEN."
-        />
+        <meta name="description" content="Shop premium clothing and accessories from LUMEN."/>
       </Helmet>
       <Navbar />
       <Hero />

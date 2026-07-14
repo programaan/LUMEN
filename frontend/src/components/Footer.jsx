@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { toast } from "sonner";
+import { NavLink } from "react-router-dom";
 
 import productService from "../services/productService";
-import { NavLink } from "react-router-dom";
+
 
 const navLinks = [
   {
@@ -40,10 +41,12 @@ function Footer() {
 
       setSubscribed(true);
       setEmail("");
-    } catch (error) {
+    } 
+    catch (error) {
       if (error.response?.data?.email?.[0]) {
         toast.error(error.response.data.email[0]);
-      } else {
+      } 
+      else {
         toast.error("You are already subscribed.");
       }
     }
@@ -54,12 +57,7 @@ function Footer() {
       <div className="top">
         <div className="left">
           <h2>Our Philosophy</h2>
-
-          <p>
-            We create thoughtfully crafted pieces designed to elevate your
-            everyday wardrobe. Our designs blend timeless silhouettes with a
-            modern edge, offering style that transcends trends.
-          </p>
+          <p>We create thoughtfully crafted pieces designed to elevate youreveryday wardrobe. Our designs blend timeless silhouettes with amodern edge, offering style that transcends trends.</p>
         </div>
 
         <div className="center">
@@ -76,10 +74,7 @@ function Footer() {
               onChange={(e) => setEmail(e.target.value)}
             />
 
-            <button
-              type="submit"
-              disabled={subscribed}
-            >
+            <button type="submit" disabled={subscribed}>
               {subscribed ? "Subscribed" : "Sign Up"}
             </button>
           </form>
@@ -89,13 +84,7 @@ function Footer() {
       <div className="middle">
         <nav className="navbar">
           {navLinks.map((link) => (
-            <NavLink
-              key={link.path}
-              to={link.path}
-              className={({ isActive }) =>
-                isActive ? "active" : ""
-              }
-            >
+            <NavLink key={link.path} to={link.path} className={({ isActive }) => isActive ? "active" : ""}>
               {link.name}
             </NavLink>
           ))}

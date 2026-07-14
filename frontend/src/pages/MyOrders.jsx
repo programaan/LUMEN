@@ -13,13 +13,10 @@ import { toast } from "sonner";
 function MyOrders() {
   const [orders, setOrders] = useState([]);
 
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
 
   const handleCancelOrder = async (orderId) => {
-    const confirmCancel = window.confirm(
-      "Are you sure you want to cancel this order?"
-    );
+    const confirmCancel = window.confirm("Are you sure you want to cancel this order?");
 
     if (!confirmCancel) return;
 
@@ -30,7 +27,8 @@ function MyOrders() {
       setOrders(data);
 
       toast.success("Order cancelled successfully.");
-    } catch (error) {
+    } 
+    catch (error) {
         console.error(error);
         toast.error("Failed to cancel order.");
       }
@@ -39,13 +37,14 @@ function MyOrders() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const data =
-          await productService.getOrders();
+        const data = await productService.getOrders();
 
         setOrders(data);
-      } catch (error) {
+      } 
+      catch (error) {
         console.error(error);
-      } finally {
+      } 
+      finally {
         setLoading(false);
       }
     };
@@ -67,7 +66,6 @@ function MyOrders() {
     <>
       <Helmet>
         <title>My Orders | LUMEN</title>
-
         <meta name="robots" content="noindex" />
       </Helmet>
 
@@ -85,23 +83,16 @@ function MyOrders() {
             <h3>No Orders Yet</h3>
 
             <p>
-              Looks like you haven't placed
-              an order yet.
+              Looks like you haven't placed an order yet.
             </p>
 
-            <Link
-              to="/collection"
-              className="empty-btn"
-            >
+            <Link to="/collection" className="empty-btn">
               Start Shopping
             </Link>
           </div>
         ) : (
           orders.map((order) => (
-            <div
-              className="order-card"
-              key={order.id}
-            >
+            <div className="order-card" key={order.id}>
               <h3>
                 Order #{order.id}
               </h3>
@@ -115,23 +106,14 @@ function MyOrders() {
 
               <p>
                 Date:{" "}
-                {new Date(
-                  order.created_at
-                ).toLocaleDateString()}
+                {new Date(order.created_at).toLocaleDateString()}
               </p>
 
               <hr />
 
               {order.items.map((item) => (
-                <div
-                  className="order-item"
-                  key={item.id}
-                >
-                  <img
-                    src={item.product.image}
-                    alt={item.product.name}
-                    width="80"
-                  />
+                <div className="order-item" key={item.id}>
+                  <img src={item.product.image} alt={item.product.name} width="80"/>
 
                   <div>
                     <h4>
@@ -159,10 +141,7 @@ function MyOrders() {
                 </h3>
 
                 {order.status.toLowerCase() === "pending" && (
-                  <button
-                    className="cancel-order-btn"
-                    onClick={() => handleCancelOrder(order.id)}
-                  >
+                  <button className="cancel-order-btn" onClick={() => handleCancelOrder(order.id)}>
                     Cancel Order
                   </button>
                 )}

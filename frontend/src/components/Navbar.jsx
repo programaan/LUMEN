@@ -1,11 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import {
-  useContext,
-  useState,
-  useRef,
-  useEffect,
-} from "react";
-
+import { useContext, useState, useRef, useEffect } from "react";
 import { CartContext } from "../context/CartContext";
 import { AuthContext } from "../context/AuthContext";
 
@@ -13,48 +7,36 @@ import profileIcon from "../assets/icons/profile.png";
 import cartIcon from "../assets/icons/cart.png";
 
 function Navbar() {
-  const { cart, setShowCart } =
-    useContext(CartContext);
+  const { cart, setShowCart } = useContext(CartContext);
 
-  const { user, logout } =
-    useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  const [showMenu, setShowMenu] =
-    useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
-  const [showProfile, setShowProfile] =
-    useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
   const menuRef = useRef(null);
 
   useEffect(() => {
     function handleClickOutside(e) {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(e.target)
-      ) {
+      if ( menuRef.current && !menuRef.current.contains(e.target) ) {
         setShowProfile(false);
       }
     }
 
-    document.addEventListener(
-      "mousedown",
-      handleClickOutside
-    );
+    document.addEventListener( "mousedown", handleClickOutside );
 
     return () =>
-      document.removeEventListener(
-        "mousedown",
-        handleClickOutside
-      );
+      document.removeEventListener( "mousedown", handleClickOutside );
   }, []);
 
   useEffect(() => {
     if (showMenu) {
       document.body.style.overflow = "hidden";
-    } else {
+    } 
+    else {
       document.body.style.overflow = "";
     }
 
@@ -72,22 +54,12 @@ function Navbar() {
   return (
     <header className="header">
 
-      <button
-        className={`menu-toggle ${
-          showMenu ? "active" : ""
-        }`}
-        onClick={() =>
-          setShowMenu(!showMenu)
-        }
-      >
+      <button className={`menu-toggle ${ showMenu ? "active" : "" }`} onClick={() => setShowMenu(!showMenu)}>
         <span></span>
         <span></span>
       </button>
 
-      <NavLink
-        to="/"
-        className="logo"
-        onClick={() => {
+      <NavLink to="/" className="logo" onClick={() => {
           setShowMenu(false);
           setShowProfile(false);
         }}
@@ -95,64 +67,36 @@ function Navbar() {
         LUMEN
       </NavLink>
 
-      <nav
-        className={`nav ${
-          showMenu ? "active" : ""
-        }`}
-      >
-        <NavLink
-          to="/"
-          onClick={() =>
-            setShowMenu(false)
-          }
-          className={({ isActive }) =>
-            isActive ? "active" : ""
-          }
+      <nav className={`nav ${showMenu ? "active" : ""}`}>
+        <NavLink to="/" onClick={() => setShowMenu(false)}
+          className={({ isActive }) => isActive ? "active" : ""}
         >
           Shop
         </NavLink>
 
-        <NavLink
-          to="/collection"
-          onClick={() =>
-            setShowMenu(false)
-          }
-          className={({ isActive }) =>
-            isActive ? "active" : ""
-          }
+        <NavLink to="/collection" onClick={() => setShowMenu(false)}
+          className={({ isActive }) => isActive ? "active" : ""}
         >
           Collections
         </NavLink>
 
-        <NavLink
-          to="/about"
-          onClick={() =>
-            setShowMenu(false)
-          }
-          className={({ isActive }) =>
-            isActive ? "active" : ""
-          }
+        <NavLink to="/about" onClick={() => setShowMenu(false)}
+          className={({ isActive }) => isActive ? "active" : ""}
         >
           About
         </NavLink>
       </nav>
 
       {showMenu && (
-        <div
-          className="nav-overlay"
-          onClick={() => setShowMenu(false)}
-        ></div>
+        <div className="nav-overlay" onClick={() => setShowMenu(false)}>
+        </div>
       )}
 
         <div className="actions">
-          <div
-            className="profile-menu"
-            ref={menuRef}
-          >
+          <div className="profile-menu" ref={menuRef}>
             <button
               className={`profile-btn ${showProfile ? "active" : ""}`}
-              onClick={() => {
-                setShowMenu(false);
+              onClick={() => { setShowMenu(false);
 
                 if (user) {
                   setShowProfile(!showProfile);
@@ -161,19 +105,12 @@ function Navbar() {
                 }
               }}
             >
-              <img
-                src={profileIcon}
-                alt="Profile"
-                className="profile-icon"
-              />
+              <img src={profileIcon} alt="Profile" className="profile-icon" />
             </button>
 
             {user && showProfile && (
               <div className="profile-dropdown">
-                <NavLink
-                  to="/orders"
-                  onClick={() => setShowProfile(false)}
-                >
+                <NavLink to="/orders" onClick={() => setShowProfile(false)}>
                   My Orders
                 </NavLink>
 
@@ -184,20 +121,13 @@ function Navbar() {
             )}
           </div>
 
-          <span
-            className="icon-cart"
-            onClick={() => {
+          <span className="icon-cart" onClick={() => {
               setShowMenu(false);
               setShowProfile(false);
               setShowCart(true);
             }}
           >
-            <img
-              src={cartIcon}
-              alt="Cart"
-              className="cart-icon"
-            />
-
+            <img src={cartIcon} alt="Cart"className="cart-icon" />
             <span>{cart.length}</span>
           </span>
         </div>

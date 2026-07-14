@@ -16,9 +16,11 @@ function Latest() {
           await productService.getLatestProducts();
 
         setProducts(data);
-      } catch (error) {
+      } 
+      catch (error) {
         console.error(error);
-      } finally {
+      } 
+      finally {
         setLoading(false);
       }
     };
@@ -35,12 +37,7 @@ function Latest() {
       <h2>Latest Products</h2>
 
       <div className="product-grid">
-        {products.slice(0, 4).map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-          />
-        ))}
+        {products.slice(0, 4).map((product) => (<ProductCard key={product.id} product={product}/>))}
       </div>
     </section>
   );

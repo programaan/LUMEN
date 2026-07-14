@@ -152,6 +152,11 @@ STATICFILES_STORAGE = (
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://lumen-beige-alpha.vercel.app",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://lumen-beige-alpha.vercel.app",
 ]
 
 REST_FRAMEWORK = {

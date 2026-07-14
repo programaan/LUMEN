@@ -10,11 +10,7 @@ function NotFound() {
     <>
       <Helmet>
         <title>404 | LUMEN</title>
-
-        <meta
-          name="description"
-          content="Page not found."
-        />
+        <meta name="description" content="Page not found."/>
       </Helmet>
 
 
@@ -25,14 +21,10 @@ function NotFound() {
           <h2>Oops! Page Not Found</h2>
 
           <p>
-            The page you are looking for
-            doesn't exist or has been moved.
+            The page you are looking for doesn't exist or has been moved.
           </p>
 
-          <Link
-            to="/"
-            className="notfound-btn"
-          >
+          <Link to="/" className="notfound-btn">
             Back Home
           </Link>
         </div>

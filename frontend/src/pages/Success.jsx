@@ -6,17 +6,12 @@ import Footer from "../components/Footer";
 import { Helmet } from "react-helmet-async";
 
 function Success() {
-  const orderNumber =
-    "#" +
-    Math.floor(
-      100000 + Math.random() * 900000
-    );
+  const orderNumber = "#" + Math.floor(100000 + Math.random() * 900000);
 
   return (
     <>
       <Helmet>
         <title>Order Confirmed | LUMEN</title>
-
         <meta name="robots" content="noindex" />
       </Helmet>
 
@@ -36,8 +31,7 @@ function Success() {
           </p>
 
           <p>
-            Your payment was successful and
-            your order has been placed.
+            Your payment was successful and your order has been placed.
           </p>
 
           <div className="success-info">
@@ -58,17 +52,11 @@ function Success() {
           </div>
 
           <div className="success-actions">
-            <Link
-              to="/orders"
-              className="view-orders"
-            >
+            <Link to="/orders" className="view-orders">
               View My Orders
             </Link>
 
-            <Link
-              to="/"
-              className="continue-shopping"
-            >
+            <Link to="/" className="continue-shopping">
               Continue Shopping
             </Link>
           </div>

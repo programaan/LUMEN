@@ -5,10 +5,7 @@ function ProductCard({ product }) {
   return (
     <div className="product-card">
       <Link to={`/details/${product.slug}`}>
-        <img
-          src={product.image}
-          alt={product.name}
-        />
+        <img src={product.image} alt={product.name} />
       </Link>
 
       <h3>

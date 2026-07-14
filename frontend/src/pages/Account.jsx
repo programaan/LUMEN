@@ -1,10 +1,8 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { AuthContext } from "../context/AuthContext";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
-
 import { Helmet } from "react-helmet-async";
 
 function Account() {
@@ -14,20 +12,11 @@ function Account() {
 
   const [isLogin, setIsLogin] = useState(true);
 
-  const [passwordStrength, setPasswordStrength] =
-  useState("");
+  const [passwordStrength, setPasswordStrength] = useState("");
 
-  const [loginData, setLoginData] = useState({
-    email: "",
-    password: "",
-  });
+  const [loginData, setLoginData] = useState({email: "", password: "",});
 
-  const [registerData, setRegisterData] = useState({
-    full_name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const [registerData, setRegisterData] = useState({full_name: "", email: "", password: "", confirmPassword: ""});
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -39,15 +28,11 @@ function Account() {
 
     try {
       await login(loginData);
-
       toast.success("Welcome back!");
-
       navigate("/");
-    } catch (err) {
-      toast.error(
-        err.response?.data?.detail ||
-          "Invalid email or password."
-      );
+    } 
+    catch (err) {
+      toast.error(err.response?.data?.detail || "Invalid email or password.");
     }
   }
 
@@ -65,8 +50,7 @@ function Account() {
   const hasUpper = /[A-Z]/.test(password);
   const hasLower = /[a-z]/.test(password);
   const hasNumber = /\d/.test(password);
-  const hasSpecial =
-    /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
   let score = 0;
 
@@ -98,10 +82,7 @@ function Account() {
       return;
     }
 
-    if (
-      registerData.password !==
-      registerData.confirmPassword
-    ) {
+    if (registerData.password !== registerData.confirmPassword) {
       toast.error("Passwords do not match.");
       return;
     }
@@ -113,26 +94,12 @@ function Account() {
         password: registerData.password,
       });
 
-      toast.success(
-        "Account created. Please verify your email."
-      );
-
-      setRegisterData({
-        full_name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-      });
-
+      toast.success("Account created. Please verify your email.");
+      setRegisterData({full_name: "",email: "",password: "",confirmPassword: "",});
       setPasswordStrength("");
-
       setIsLogin(true);
     } catch (err) {
-      toast.error(
-        err.response?.data?.email?.[0] ||
-          err.response?.data?.detail ||
-          "Registration failed."
-      );
+      toast.error(err.response?.data?.email?.[0] || err.response?.data?.detail || "Registration failed.");
     }
   }
 
@@ -141,7 +108,6 @@ function Account() {
 
       <Helmet>
         <title>Account | LUMEN</title>
-
         <meta name="robots" content="noindex" />
       </Helmet>
 
@@ -150,10 +116,7 @@ function Account() {
           <>
             <h2>Welcome Back</h2>
 
-            <form
-              className="account-form"
-              onSubmit={handleLogin}
-            >
+            <form className="account-form" onSubmit={handleLogin}>
               <input
                 type="email"
                 placeholder="Email Address"
@@ -183,34 +146,20 @@ function Account() {
               </button>
             </form>
 
-            <Link
-              to="/forgot-password"
-              className="account-link"
-            >
+            <Link to="/forgot-password" className="account-link">
               Forgot Password?
             </Link>
 
             <div className="account-divider"></div>
-
             <h3>New to LUMEN?</h3>
 
             <p className="account-text">
-              Create an account to save your
-              favorites and checkout faster.
+              Create an account to save your favorites and checkout faster.
             </p>
 
-            <button
-              className="secondary-btn"
-              onClick={() => {
-                setIsLogin(false);
+            <button className="secondary-btn" onClick={() => { setIsLogin(false);
 
-                setRegisterData({
-                  full_name: "",
-                  email: "",
-                  password: "",
-                  confirmPassword: "",
-                });
-
+                setRegisterData({full_name: "", email: "", password: "", confirmPassword: "",});
                 setPasswordStrength("");
               }}
             >
@@ -221,10 +170,7 @@ function Account() {
           <>
             <h2>Create Account</h2>
 
-            <form
-              className="account-form"
-              onSubmit={handleRegister}
-            >
+            <form className="account-form" onSubmit={handleRegister}>
               <input
                 type="text"
                 placeholder="Full Name"
@@ -268,11 +214,7 @@ function Account() {
 
               {passwordStrength && (
                 <p
-                  className={`password-strength ${passwordStrength.toLowerCase().replace(
-                    " ",
-                    "-"
-                  )}`}
-                >
+                  className={`password-strength ${passwordStrength.toLowerCase().replace(" ", "-")}`}>
                   Strength: {passwordStrength}
                 </p>
               )}
@@ -303,16 +245,8 @@ function Account() {
               Already have an account?
             </p>
 
-            <button
-              className="secondary-btn"
-              onClick={() => {
-                setIsLogin(true);
-
-                setLoginData({
-                  email: "",
-                  password: "",
-                });
-
+            <button className="secondary-btn" onClick={() => {setIsLogin(true);
+                setLoginData({email: "", password: ""});
                 setPasswordStrength("");
               }}
             >

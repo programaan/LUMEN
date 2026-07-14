@@ -21,16 +21,11 @@ function ForgotPassword() {
     try {
       await productService.forgotPassword(email);
 
-      toast.success(
-        "Password reset link sent to your email."
-      );
-
+      toast.success("Password reset link sent to your email.");
       setEmail("");
-    } catch (error) {
-      toast.error(
-        error.response?.data?.detail ||
-          "Something went wrong."
-      );
+    } 
+    catch (error) {
+      toast.error(error.response?.data?.detail || "Something went wrong.");
     }
   }
 
@@ -43,7 +38,6 @@ function ForgotPassword() {
 
       <Helmet>
         <title>Forgot Password | LUMEN</title>
-
         <meta name="robots" content="noindex" />
       </Helmet>
 
@@ -51,21 +45,15 @@ function ForgotPassword() {
         <h2>Forgot Password</h2>
 
         <p className="account-text">
-          Enter your email address and we'll
-          send you a password reset link.
+          Enter your email address and we'll send you a password reset link.
         </p>
 
-        <form
-          className="account-form"
-          onSubmit={handleSubmit}
-        >
+        <form className="account-form" onSubmit={handleSubmit}>
           <input
             type="email"
             placeholder="Email Address"
             value={email}
-            onChange={(e) =>
-              setEmail(e.target.value)
-            }
+            onChange={(e) =>setEmail(e.target.value)}
           />
 
           <button type="submit">
@@ -75,10 +63,7 @@ function ForgotPassword() {
 
         <div className="account-divider"></div>
 
-        <NavLink
-          to="/account"
-          className="account-link"
-        >
+        <NavLink to="/account" className="account-link">
           Back to Sign In
         </NavLink>
       </div>

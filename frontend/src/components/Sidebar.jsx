@@ -1,7 +1,4 @@
-function Sidebar({
-  category,
-  setCategory,
-}) {
+function Sidebar({ category, setCategory }) {
   const categories = [
     {
       label: "All Products",
@@ -26,16 +23,9 @@ function Sidebar({
 
         <ul>
           {categories.map((item) => (
-            <li
-              key={item.value}
-              className={
-                category === item.value
-                  ? "active"
-                  : ""
-              }
-              onClick={() =>
-                setCategory(item.value)
-              }
+            <li key={item.value}
+              className={ category === item.value ? "active" : "" }
+              onClick={() => setCategory(item.value)}
             >
               {item.label}
             </li>

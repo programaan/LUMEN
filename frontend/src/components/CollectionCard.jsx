@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-
 import { CartContext } from "../context/CartContext";
 
 function CollectionCard({ product }) {
@@ -25,10 +24,7 @@ function CollectionCard({ product }) {
         ${product.price}
       </div>
 
-      <button
-        className="addCart"
-        onClick={() => addToCart(product.id)}
-      >
+      <button className="addCart" onClick={() => addToCart(product.id)}>
         Add To Cart
       </button>
     </div>
