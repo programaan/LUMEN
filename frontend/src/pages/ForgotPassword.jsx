@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom";
 import { toast } from "sonner";
 
 import productService from "../services/productService";
-import Loader from "../components/Loader";
 
 import { Helmet } from "react-helmet-async";
 
@@ -28,10 +27,6 @@ function ForgotPassword() {
       toast.error(error.response?.data?.detail || "Something went wrong.");
     }
   }
-
-  if (loading) {
-      return <Loader />;
-    }
 
   return (
     <section className="account-page">
