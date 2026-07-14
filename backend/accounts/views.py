@@ -5,17 +5,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
-
-from .serializers import (
-    RegisterSerializer,
-    LoginSerializer,
-    UserSerializer,
-    ResetPasswordSerializer,
-)
-
 from rest_framework.permissions import IsAuthenticated
-
 from rest_framework.permissions import AllowAny
 
 from django.contrib.auth.tokens import default_token_generator
@@ -25,8 +15,7 @@ from django.contrib.auth import get_user_model
 
 from .services import send_reset_email, send_verification_email
 
-
-
+from .serializers import ( RegisterSerializer, LoginSerializer, UserSerializer, ResetPasswordSerializer )
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()

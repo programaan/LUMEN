@@ -1,11 +1,7 @@
 from rest_framework import generics
-
 from .models import Product, Category, Newsletter
-from .serializers import (
-    ProductSerializer,
-    CategorySerializer,
-    NewsletterSerializer,
-)
+
+from .serializers import ( ProductSerializer, CategorySerializer, NewsletterSerializer )
 
 
 class ProductListView(generics.ListAPIView):

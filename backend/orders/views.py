@@ -2,18 +2,15 @@ from decimal import Decimal
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
 from rest_framework.decorators import action
 
 from cart.models import Cart
-
 from .models import Order, OrderItem
 from .serializers import OrderSerializer
 from django.shortcuts import get_object_or_404
+from django.conf import settings
 
 import razorpay
-
-from django.conf import settings
 
 
 class OrderListView(generics.ListAPIView):
@@ -40,11 +37,11 @@ class OrderDetailView(generics.RetrieveAPIView):
             user=self.request.user,
         )
 
-client = razorpay.Client(
-    auth=(
-        settings.RAZORPAY_KEY_ID,
-        settings.RAZORPAY_KEY_SECRET,
-    )
+    client = razorpay.Client(
+        auth=(
+            settings.RAZORPAY_KEY_ID,
+            settings.RAZORPAY_KEY_SECRET,
+        )
 )
 
 class CreatePaymentView(generics.GenericAPIView):
