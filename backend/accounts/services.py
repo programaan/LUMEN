@@ -1,31 +1,14 @@
-import logging
-
-import resend
 from django.conf import settings
 from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
+import logging
 
 logger = logging.getLogger(__name__)
 
-resend.api_key = settings.RESEND_API_KEY
-
-
-def _send_email(subject, html, email):
-    try:
-        resend.Emails.send(
-            {
-                "from": settings.DEFAULT_FROM_EMAIL,
-                "to": [email],
-                "subject": subject,
-                "html": html,
-            }
-        )
-
-    except Exception:
-        logger.exception("Failed to send email.")
-        raise
-
 
 def send_reset_email(email, reset_link):
+    subject = "Reset your LUMEN password"
+
     html = render_to_string(
         "emails/reset_password.html",
         {
@@ -33,14 +16,31 @@ def send_reset_email(email, reset_link):
         },
     )
 
-    _send_email(
-        "Reset your LUMEN password",
-        html,
-        email,
+    message = EmailMultiAlternatives(
+        subject=subject,
+        body="",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[email],
     )
+
+    message.attach_alternative(
+        html,
+        "text/html",
+    )
+
+    try:
+        message.send(fail_silently=False)
+
+    except Exception:
+        logger.exception(
+            "Failed to send reset password email."
+        )
+        raise
 
 
 def send_verification_email(email, verify_link):
+    subject = "Verify your LUMEN account"
+
     html = render_to_string(
         "emails/verify_email.html",
         {
@@ -48,8 +48,23 @@ def send_verification_email(email, verify_link):
         },
     )
 
-    _send_email(
-        "Verify your LUMEN account",
-        html,
-        email,
+    message = EmailMultiAlternatives(
+        subject=subject,
+        body="",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[email],
     )
+
+    message.attach_alternative(
+        html,
+        "text/html",
+    )
+
+    try:
+        message.send(fail_silently=False)
+
+    except Exception:
+        logger.exception(
+            "Failed to send verification email."
+        )
+        raise
