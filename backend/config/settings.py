@@ -157,6 +157,7 @@ CORS_ALLOWED_ORIGINS = [
 
 CSRF_TRUSTED_ORIGINS = [
     "https://lumen-beige-alpha.vercel.app",
+    "https://lumen-production-34c2.up.railway.app",
 ]
 
 REST_FRAMEWORK = {
