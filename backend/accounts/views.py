@@ -42,10 +42,10 @@ class RegisterView(generics.CreateAPIView):
                     f"{uid}/{token}"
                 )
 
-            #    send_verification_email(
-            #       user.email,
-            #        verify_link,
-            #    )
+                send_verification_email(
+                   user.email,
+                    verify_link,
+                )
 
         except Exception:
             return Response(
