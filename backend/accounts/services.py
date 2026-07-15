@@ -3,8 +3,6 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 import logging
 
-from django.core.mail import send_mail
-
 logger = logging.getLogger(__name__)
 
 
@@ -40,13 +38,33 @@ def send_reset_email(email, reset_link):
         raise
 
 
-
-
 def send_verification_email(email, verify_link):
-    send_mail(
-        subject="Verify your LUMEN account",
-        message=f"Click here to verify your account:\n\n{verify_link}",
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[email],
-        fail_silently=False,
+    subject = "Verify your LUMEN account"
+
+    html = render_to_string(
+        "emails/verify_email.html",
+        {
+            "verify_link": verify_link,
+        },
     )
+
+    message = EmailMultiAlternatives(
+        subject=subject,
+        body="",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[email],
+    )
+
+    message.attach_alternative(
+        html,
+        "text/html",
+    )
+
+    try:
+        message.send(fail_silently=False)
+
+    except Exception:
+        logger.exception(
+            "Failed to send verification email."
+        )
+        raise
