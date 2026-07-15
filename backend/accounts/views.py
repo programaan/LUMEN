@@ -24,43 +24,43 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
     def create(self, request, *args, **kwargs):
-    serializer = self.get_serializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-    try:
-        with transaction.atomic():
-            user = serializer.save()
+        try:
+            with transaction.atomic():
+                user = serializer.save()
 
-            uid = urlsafe_base64_encode(
-                force_bytes(user.pk)
+                uid = urlsafe_base64_encode(
+                    force_bytes(user.pk)
+                )
+
+                token = default_token_generator.make_token(user)
+
+                verify_link = (
+                    f"{settings.FRONTEND_URL}/verify-email/"
+                    f"{uid}/{token}"
+                )
+
+                send_verification_email(
+                    user.email,
+                    verify_link,
+                )
+
+        except Exception:
+            return Response(
+                {
+                    "detail": "Unable to send verification email. Please try again."
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
-            token = default_token_generator.make_token(user)
-
-            verify_link = (
-                f"{settings.FRONTEND_URL}/verify-email/"
-                f"{uid}/{token}"
-            )
-
-            send_verification_email(
-                user.email,
-                verify_link,
-            )
-
-    except Exception:
         return Response(
             {
-                "detail": "Unable to send verification email. Please try again."
+                "detail": "Account created. Please verify your email."
             },
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            status=status.HTTP_201_CREATED,
         )
-
-    return Response(
-        {
-            "detail": "Account created. Please verify your email."
-        },
-        status=status.HTTP_201_CREATED,
-    )
 
 
 class LoginView(APIView):
@@ -96,48 +96,48 @@ class ForgotPasswordView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-    email = request.data.get("email")
+        email = request.data.get("email")
 
-    User = get_user_model()
+        User = get_user_model()
 
-    user = User.objects.filter(email=email).first()
+        user = User.objects.filter(email=email).first()
 
-    if not user:
+        if not user:
+            return Response(
+                {
+                    "detail": "If an account exists, a reset email has been sent."
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        token = default_token_generator.make_token(user)
+
+        reset_link = (
+            f"{settings.FRONTEND_URL}/reset-password/"
+            f"{uid}/{token}"
+        )
+
+        try:
+            send_reset_email(
+                user.email,
+                reset_link,
+            )
+
+        except Exception:
+            return Response(
+                {
+                    "detail": "Unable to send reset email. Please try again."
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
         return Response(
             {
-                "detail": "If an account exists, a reset email has been sent."
+                "detail": "Password reset email sent."
             },
             status=status.HTTP_200_OK,
         )
-
-    uid = urlsafe_base64_encode(force_bytes(user.pk))
-    token = default_token_generator.make_token(user)
-
-    reset_link = (
-        f"{settings.FRONTEND_URL}/reset-password/"
-        f"{uid}/{token}"
-    )
-
-    try:
-        send_reset_email(
-            user.email,
-            reset_link,
-        )
-
-    except Exception:
-        return Response(
-            {
-                "detail": "Unable to send reset email. Please try again."
-            },
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        )
-
-    return Response(
-        {
-            "detail": "Password reset email sent."
-        },
-        status=status.HTTP_200_OK,
-    )
 
 class ResetPasswordView(APIView):
     permission_classes = [AllowAny]
