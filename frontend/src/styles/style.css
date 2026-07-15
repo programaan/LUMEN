@@ -2685,7 +2685,7 @@ header .icon-cart span{
   /* Hero */
 
   .hero{
-      min-height:70vh;
+      min-height:80vh;
       padding:0 20px;
       background-size:cover;
       background-position: center;
@@ -2715,11 +2715,12 @@ header .icon-cart span{
     color: white;
   }
 
-
   .hero-text button{
     width:auto;
     padding:15px 20px;
     font-size:14px;
+    background: #e9e7e4;
+    color: #000;
   }
 
   /* Featured */
