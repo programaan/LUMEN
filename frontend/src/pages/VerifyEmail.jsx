@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -10,6 +10,8 @@ function VerifyEmail() {
 
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (!uid || !token) return;
 
@@ -18,10 +20,13 @@ function VerifyEmail() {
         await productService.verifyEmail(uid, token);
         toast.success("Email verified successfully!");
         navigate("/account");
-      } 
-      catch (error) {
-        toast.error(error.response?.data?.detail || "Verification failed.");
+      } catch (error) {
+        toast.error(
+          error.response?.data?.detail || "Verification failed."
+        );
         navigate("/account");
+      } finally {
+        setLoading(false);
       }
     }
 
