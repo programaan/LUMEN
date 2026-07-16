@@ -2685,11 +2685,11 @@ header .icon-cart span{
   /* Hero */
 
   .hero{
-      min-height:90vh;
-      padding:0 20px;
-      background-size:cover;
-      background-position: center;
-      position: relative;
+    background-image: url("https://ik.imagekit.io/kjwgmmtvi/Mobile.jpg?updatedAt=1783780946331");
+    min-height:84vh;
+    padding:0 20px;
+    background-position: center;
+    position: relative;
   }
 
   .hero-text{
