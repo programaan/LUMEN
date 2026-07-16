@@ -1,14 +1,51 @@
+from mailjet_rest import Client
 from django.conf import settings
 from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
 import logging
 
 logger = logging.getLogger(__name__)
 
+mailjet = Client(
+    auth=(
+        settings.MAILJET_API_KEY,
+        settings.MAILJET_API_SECRET,
+    ),
+    version="v3.1",
+)
+
+
+def _send_email(subject, html, email):
+    data = {
+        "Messages": [
+            {
+                "From": {
+                    "Email": settings.DEFAULT_FROM_EMAIL,
+                    "Name": "LUMEN",
+                },
+                "To": [
+                    {
+                        "Email": email,
+                    }
+                ],
+                "Subject": subject,
+                "HTMLPart": html,
+            }
+        ]
+    }
+
+    try:
+        result = mailjet.send.create(data=data)
+
+        if result.status_code not in (200, 201):
+            logger.error(result.json())
+            raise Exception("Mailjet failed to send email.")
+
+    except Exception:
+        logger.exception("Failed to send email.")
+        raise
+
 
 def send_reset_email(email, reset_link):
-    subject = "Reset your LUMEN password"
-
     html = render_to_string(
         "emails/reset_password.html",
         {
@@ -16,31 +53,14 @@ def send_reset_email(email, reset_link):
         },
     )
 
-    message = EmailMultiAlternatives(
-        subject=subject,
-        body="",
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        to=[email],
-    )
-
-    message.attach_alternative(
+    _send_email(
+        "Reset your LUMEN password",
         html,
-        "text/html",
+        email,
     )
-
-    try:
-        message.send(fail_silently=False)
-
-    except Exception:
-        logger.exception(
-            "Failed to send reset password email."
-        )
-        raise
 
 
 def send_verification_email(email, verify_link):
-    subject = "Verify your LUMEN account"
-
     html = render_to_string(
         "emails/verify_email.html",
         {
@@ -48,23 +68,8 @@ def send_verification_email(email, verify_link):
         },
     )
 
-    message = EmailMultiAlternatives(
-        subject=subject,
-        body="",
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        to=[email],
-    )
-
-    message.attach_alternative(
+    _send_email(
+        "Verify your LUMEN account",
         html,
-        "text/html",
+        email,
     )
-
-    try:
-        message.send(fail_silently=False)
-
-    except Exception:
-        logger.exception(
-            "Failed to send verification email."
-        )
-        raise
